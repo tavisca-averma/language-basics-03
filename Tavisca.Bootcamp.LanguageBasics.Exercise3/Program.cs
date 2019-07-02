@@ -176,7 +176,7 @@ namespace Tavisca.Bootcamp.LanguageBasics.Exercise1
             return updated_index_list;
         }
 
-        private static int CalorieCount(int carb,int pro,int fat)
+        private static int CalorieCount(int carb,int protien,int fat)
         {
             return carb * 5 + pro * 5 + fat * 9;
         }
