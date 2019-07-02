@@ -38,10 +38,147 @@ namespace Tavisca.Bootcamp.LanguageBasics.Exercise1
             Console.WriteLine(result);
         }
 
+        private static List<int> FindSmallest(int[] arr, List<int> list)
+        {
+            int min = arr[list[0]];
+            List<int> updated_index_list = new List<int>();
+            foreach (int x in list)
+            {
+                if (min == arr[x])
+                {
+                    updated_index_list.Add(x);
+                }
+                else if (min > arr[x])
+                {
+                    updated_index_list.Clear();
+                    min = arr[x];
+                    updated_index_list.Add(x);
+                }
+                else
+                {
+                    continue;
+                }
+            }
+            return updated_index_list;
+        }
+
         public static int[] SelectMeals(int[] protein, int[] carbs, int[] fat, string[] dietPlans)
         {
-            // Add your code here.
-            throw new NotImplementedException();
+            int len = protein.Length;
+            int[] calorie = new int[len];
+            int[] meals = new int[dietPlans.Length];
+            for( int i = 0; i < len; i++)
+            {
+                calorie[i] = CalorieCount(protein[i], carbs[i], fat[i]);
+            }
+            for ( int i = 0; i < dietPlans.Length; i++)
+            {
+                var index_list = Enumerable.Range(0,len).ToList();
+                foreach ( char x in dietPlans[i])
+                {
+                    bool flag = true;
+                    switch (x)
+                    {
+                        case 'C':
+                            index_list = FindLargest(carbs, index_list);
+                            if (index_list.Count == 1)
+                            {
+                                flag = false;
+                            }
+                            break;
+                        case 'c':
+                            index_list = FindSmallest(carbs, index_list);
+                            if (index_list.Count == 1)
+                            {
+                                flag = false;
+                            }
+                            break;
+                        case 'P':
+                            index_list = FindLargest(protein, index_list);
+                            if (index_list.Count == 1)
+                            {
+                                flag = false;
+                            }
+                            break;
+                        case 'p':
+                            index_list = FindSmallest(protein, index_list);
+                            if (index_list.Count == 1)
+                            {
+                                flag = false;
+                            }
+                            break;
+                        case 'F':
+                            index_list = FindLargest(fat, index_list);
+                            if (index_list.Count == 1)
+                            {
+                                flag = false;
+                            }
+                            break;
+                        case 'f':
+                            index_list = FindSmallest(fat, index_list);
+                            if (index_list.Count == 1)
+                            {
+                                flag = false;
+                            }
+                            break;
+                        case 'T':
+                            index_list = FindLargest(calorie, index_list);
+                            if (index_list.Count == 1)
+                            {
+                                flag = false;
+                            }
+                            break;
+                        case 't':
+                            index_list = FindSmallest(calorie, index_list);
+                            if (index_list.Count == 1)
+                            {
+                                flag = false;
+                            }
+                            break;
+                        default:
+                            Console.WriteLine("Default case");
+                            break;
+                    }
+                    if (!flag)
+                    {
+                        break;
+                    }
+                }
+                meals[i] = index_list[0];
+            }
+            
+            return meals;
+        }
+
+        
+
+        private static List<int> FindLargest(int[] arr, List<int> list)
+        {
+            int max = arr[list[0]];
+            List<int> updated_index_list = new List<int>();
+            foreach (int x in list)
+            {
+                if (max < arr[x])
+                {
+                    updated_index_list.Clear();
+                    max = arr[x];
+                    updated_index_list.Add(x);
+                }
+                else if (max == arr[x])
+                {
+                    updated_index_list.Add(x);
+                }
+                else
+                {
+                    continue;
+                }
+            }
+            return updated_index_list;
+        }
+
+        private static int CalorieCount(int carb,int pro,int fat)
+        {
+            return carb * 5 + pro * 5 + fat * 9;
         }
     }
 }
